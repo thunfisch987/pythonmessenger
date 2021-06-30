@@ -1,0 +1,15 @@
+{
+	"python.pythonPath": "C:\\Users\\Oliver\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+	"python.linting.enabled": true,
+	"python.analysis.extraPaths": ["messenger"],
+
+	"editor.semanticTokenColorCustomizations": {
+		"[One Dark Pro]": {
+			// Apply to this theme only
+			"enabled": true,
+			"rules": {
+				"property": "#49c02c"
+			}
+		}
+	}
+}
