@@ -43,9 +43,9 @@ class Messenger(tk.Tk):
 
     def windowsettings(self):
         self.title("Python Messenger")
-        self.geometry("700x500")
-        self.minsize(700, 500)
-        self.maxsize(700, 500)
+        # self.geometry("700x500")
+        # self.minsize(700, 500)
+        # self.maxsize(700, 500)
 
     def configuregridweight(self):
         self.grid_rowconfigure(0, weight=1)
@@ -56,13 +56,12 @@ class Messenger(tk.Tk):
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
 
-    def send(self, event=None):
+    def sendmsg(self, event=None):
         """Funktion zum Senden einer Nachricht"""
 
         if self.msg_Entry.get() != "":
             self.empfaenger = "localhost"
-            self.user_IP = self.ip_Entry_1_text.get() + "." + self.ip_Entry_2_text.get() + "." + \
-                self.ip_Entry_3_text.get() + "." + self.ip_Entry_4_text.get()
+            self.ip_Entry_3_text.get() + "." + self.ip_Entry_4_text.get()
             if self.user_IP == "...":
                 pass
             if not self.validIP():
@@ -88,6 +87,8 @@ class Messenger(tk.Tk):
                     self.ausgabe.insert(tk.END, "{} (You): '{}'\n".format(
                         self.msgdict["name"], self.msgdict["msg"]), "right")
                 self.ausgabe.configure(state='disabled')
+                self.ausgabe.see("end")
+                print(self.ausgabe.yview())
                 self.msg_Entry.delete(0, tk.END)
 
     @property
@@ -118,6 +119,7 @@ if __name__ == "__main__":
         port = 15200
     root = Messenger(port)
     root.focus_force()
+    root.wm_attributes("-topmost", 1)
     root.mainloop()
     pygame.quit()
     sys.exit()
