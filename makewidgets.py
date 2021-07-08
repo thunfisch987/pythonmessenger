@@ -17,24 +17,23 @@ def widgets(self, port: int):
     """
     # Name-Label & Entry
 
-    self.usernamewidget(port)
+    self.usernamewidget()
 
     # IP-Eingabe
-    self.makeIPFrame()
+    self.makeIPFrame(port)
 
-    self.ausgabe = scrolledtext.ScrolledText(self, wrap="word")
+    self.ausgabe = scrolledtext.ScrolledText(self)
     self.ausgabe.grid(row=3,
                       column=0,
                       columnspan=3,
                       sticky="ew")
-    self.ausgabe.tag_config("right",
-                            justify="right")
+    self.ausgabe.tag_config("right", justify="right")
 
     self.makeMessageWidgets()
 
-    self.send_Button = ttk.Button(self,
-                                  text="Send",
-                                  command=self.sendmsg)
+    self.send_Button = ttk.Button(self)
+    self.send_Button["text"] = "Send"
+    self.send_Button["command"] = self.sendmsg
     self.send_Button.grid(row=4,
                           column=2,
                           sticky="w")
@@ -47,94 +46,102 @@ def widgets(self, port: int):
 
 def makeMessageWidgets(self):
     self.msgcmd = self.register(self.validmessage)
-    self.message_label = ttk.Label(self,
-                                   text="Nachricht (max. 1001 characters):")
+    self.message_label = ttk.Label(self)
+    self.message_label["text"] = "Nachricht (max. 1001 characters):"
+
+    self.msg_Entry = ttk.Entry(self)
+    self.msg_Entry["validate"] = "key"
+    self.msg_Entry["validatecommand"] = (self.msgcmd, "%Ps")
+
     self.message_label.grid(row=4,
                             column=0,
                             sticky="w")
-    self.msg_Entry = ttk.Entry(self,
-                               validate="key",
-                               validatecommand=(self.msgcmd, "%P"))
     self.msg_Entry.grid(row=4,
                         column=1,
                         sticky="w")
+
     self.msg_Entry.bind("<Return>",
                         self.sendmsg)
 
 
-def usernamewidget(self, port: int):
+def usernamewidget(self):
     """
     Defines the Username-Widgets (and Port)
-     -> UsernameFrame
-         -> port_Label
-         -> name_Label
-         -> name_Entry
+     - UsernameFrame
+     - port_Label
+     - name_Label
+     - name_Entry
     """
-    self.UsernameFrame = ttk.LabelFrame(self, relief=tk.SUNKEN)
-    self.UsernameFrame.grid(row=0, column=0, columnspan=3, sticky="nsew")
-    self.portvariable = tk.StringVar(self,
-                                     "Port: {}".format(port))
-    self.port_Label = ttk.Label(self.UsernameFrame,
-                                textvariable=self.portvariable)
-    self.port_Label.grid(row=0,
-                         column=2)
     self.usernamecmd = self.register(self.validusername)
-    self.name_Label = ttk.Label(self.UsernameFrame,
-                                text="Name (max. 8 characters):")
-    self.name_Label.grid(row=0,
-                         column=0,
-                         sticky="nw",)
-    self.name_Entry = ttk.Entry(self.UsernameFrame,
-                                validate="key",
-                                validatecommand=(self.usernamecmd, "%P"))
-    self.name_Entry.grid(row=0,
-                         column=1,
-                         sticky="nw",)
+
+    self.UsernameFrame = ttk.LabelFrame(self)
+    self.UsernameFrame["text"] = "Username: (max. 8 characters)"
+    self.UsernameFrame["relief"] = tk.SUNKEN
+
+    # self.name_Label = ttk.Label(self.UsernameFrame)
+    # self.name_Label["text"] = "Name (max. 8 characters):"
+
+    self.name_Entry = ttk.Entry(self.UsernameFrame)
+    self.name_Entry["validate"] = "key"
+    self.name_Entry["validatecommand"] = (self.usernamecmd, "%P")
+
+    self.topmost_Button = ttk.Button(
+        self.UsernameFrame, text="AlwaysOnTop", command=self.makeTopMost, style='topmost.TButton')
+
+    self.UsernameFrame.grid(row=0, column=0, columnspan=3, sticky="nsew")
+    # self.name_Label.grid(row=0, column=0, sticky="nw")
+    # self.name_Entry.grid(row=0, column=1, sticky="nw")
+    # self.port_Label.grid(row=0, column=2)
+
+    # self.name_Label.pack(side="left")
+    self.name_Entry.pack(side="left")
+    self.topmost_Button.pack(side="right")
 
 
-def makeIPFrame(self):
-    self.BigFrame = ttk.LabelFrame(self)
-    self.BigFrame.grid(row=1, column=0, columnspan=3, sticky="nsew")
-    self.receiver_Label = ttk.Label(self.BigFrame,
-                                    text="Empfänger (IP):")
-    self.receiver_Label.grid(row=0,
-                             column=0,
-                             sticky="nsew")
-    self.IPframe = ttk.LabelFrame(
-        self.BigFrame, text="Enter IP here", relief=tk.SUNKEN)
-
-    self.IPframe.grid(row=0, column=1, sticky="nsw")
-    self.IPframe["text"] = "Enter PP Here"
-
+def makeIPFrame(self, port: int):
     self.vcmd = self.register(self.checkIPEntry)
 
-    self.ip_Entry_1_text = tk.StringVar()
-    self.ip_Entry_1 = ttk.Entry(
-        self.IPframe, width=5, textvariable=self.ip_Entry_1_text, validate="key", validatecommand=(self.vcmd, "%P"))
-    self.ip_Entry_1.pack(side="left")
+    self.BigFrame = ttk.LabelFrame(self)
+    self.BigFrame["text"] = "Empfänger (IP):"
+    self.IPframe = ttk.LabelFrame(self.BigFrame)
+    #self.IPframe["text"] = "Enter IP Here"
+    self.IPframe["relief"] = tk.SUNKEN
+
+    self.ip_Entry_1 = ttk.Entry(self.IPframe)
     self.ip_dot1 = ttk.Label(self.IPframe, text=".")
-    self.ip_dot1.pack(side="left")
-
-    self.ip_Entry_2_text = tk.StringVar()
-    self.ip_Entry_2 = ttk.Entry(
-        self.IPframe, width=5, textvariable=self.ip_Entry_2_text, validate="key", validatecommand=(self.vcmd, "%P"))
-    self.ip_Entry_2.pack(side="left")
+    self.ip_Entry_2 = ttk.Entry(self.IPframe)
     self.ip_dot2 = ttk.Label(self.IPframe, text=".")
-    self.ip_dot2.pack(side="left")
-
-    self.ip_Entry_3_text = tk.StringVar()
-    self.ip_Entry_3 = ttk.Entry(
-        self.IPframe, width=5, textvariable=self.ip_Entry_3_text, validate="key", validatecommand=(self.vcmd, "%P"))
-    self.ip_Entry_3.pack(side="left")
+    self.ip_Entry_3 = ttk.Entry(self.IPframe)
     self.ip_dot3 = ttk.Label(self.IPframe, text=".")
-    self.ip_dot3.pack(side="left")
+    self.ip_Entry_4 = ttk.Entry(self.IPframe)
 
-    self.ip_Entry_4_text = tk.StringVar()
-    self.ip_Entry_4 = ttk.Entry(
-        self.IPframe, width=5, textvariable=self.ip_Entry_4_text, validate="key", validatecommand=(self.vcmd, "%P"))
+    self.ip_Entry_1["width"] = self.ip_Entry_2["width"] = self.ip_Entry_3["width"] = self.ip_Entry_4["width"] = 5
+    self.ip_Entry_1["validate"] = self.ip_Entry_2["validate"] = self.ip_Entry_3["validate"] = self.ip_Entry_4["validate"] = "key"
+    self.ip_Entry_1["validatecommand"] = self.ip_Entry_2["validatecommand"] = self.ip_Entry_3[
+        "validatecommand"] = self.ip_Entry_4["validatecommand"] = (self.vcmd, "%P")
+
+    self.invalidIP_Label = ttk.Label(self.IPframe)
+    self.invalidIP_Label["text"] = "Invalid IP !"
+    self.invalidIP_Label["foreground"] = "red"
+
+    self.port_Label = ttk.Label(self.BigFrame)
+    self.port_Label["text"] = f"Port: {port}"
+
+    self.BigFrame.grid(row=1,
+                       column=0,
+                       columnspan=3,
+                       sticky="nsew")
+    self.IPframe.pack(side="left")
+
+    self.ip_Entry_1.pack(side="left")
+    self.ip_dot1.pack(side="left")
+    self.ip_Entry_2.pack(side="left")
+    self.ip_dot2.pack(side="left")
+    self.ip_Entry_3.pack(side="left")
+    self.ip_dot3.pack(side="left")
     self.ip_Entry_4.pack(side="left")
-    self.invalidIP_Label = ttk.Label(
-        self.IPframe, text="Invalid IP !", foreground="red")
+
+    self.port_Label.pack(side="right")
 
     self.ip_Entry_1.bind("<FocusIn>", self.deleteinvIPLabel)
     self.ip_Entry_2.bind("<FocusIn>", self.deleteinvIPLabel)

@@ -25,7 +25,7 @@ class Messenger(tk.Tk):
     from makewidgets import widgets, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel, checkIPEntry, validmessage, validusername, validIP
     from networking import makesocket, listenformsg
 
-    def __init__(self, port: int):
+    def __init__(self, port: int, serversocket):
         # Ausführen der Init-Funktion von Tk(), also dem Window
         super(Messenger, self).__init__()
         pygame.mixer.init()
@@ -39,7 +39,19 @@ class Messenger(tk.Tk):
 
         # Erschaffen des Sockets (IPv4, UDP) und binden an alle Adressen mit gg. Port
         # Starten des Threads der auf einkommende Nachrichten hört
-        self.makesocket(port)
+        self.serversocket = serversocket
+        self.makesocket()
+        self.buttonstyle = ttk.Style()
+
+    def makeTopMost(self):
+        if self.wm_attributes("-topmost") == 1:
+            self.wm_attributes("-topmost", 0)
+            self.buttonstyle.configure(
+                'topmost.TButton', background='SystemButtonFace')
+        else:
+            self.wm_attributes("-topmost", 1)
+            self.buttonstyle.configure(
+                'topmost.TButton', background='palegreen')
 
     def windowsettings(self):
         self.title("Python Messenger")
@@ -61,7 +73,6 @@ class Messenger(tk.Tk):
 
         if self.msg_Entry.get() != "":
             self.empfaenger = "localhost"
-            self.ip_Entry_3_text.get() + "." + self.ip_Entry_4_text.get()
             if self.user_IP == "...":
                 pass
             if not self.validIP():
@@ -74,52 +85,85 @@ class Messenger(tk.Tk):
                     "name": self.name_Entry.get(),
                     "msg": self.msg_Entry.get()}
                 self.jsonmsg = json.dumps(self.msgdict)
-                print(len(self.jsonmsg))
                 # senden der Nachricht an Ziel-Adresse über Socket
                 self.serversocket.sendto(self.jsonmsg.encode(
                     "utf-8"), (self.empfaenger, self.port))
                 # löschen des Inhalts des Eingabe-Widgets
                 self.ausgabe.configure(state='normal')
                 if self.msgdict["name"] == "":
-                    self.ausgabe.insert(tk.END, "You: '{}'\n".format(
-                        self.msgdict["msg"]), "right")
+                    self.ausgabe.insert(
+                        tk.END, f"You: '{self.msgdict['msg']}'\n", "right")
                 else:
-                    self.ausgabe.insert(tk.END, "{} (You): '{}'\n".format(
-                        self.msgdict["name"], self.msgdict["msg"]), "right")
+                    self.ausgabe.insert(
+                        tk.END, f"{self.msgdict['name']} (You): '{self.msgdict['msg']}'\n", "right")
                 self.ausgabe.configure(state='disabled')
                 self.ausgabe.see("end")
-                print(self.ausgabe.yview())
                 self.msg_Entry.delete(0, tk.END)
 
     @property
     def user_IP(self):
-        return self.ip_Entry_1_text.get() + "." + self.ip_Entry_2_text.get() + "." + \
-            self.ip_Entry_3_text.get() + "." + self.ip_Entry_4_text.get()
+        return self.ip_Entry_1.get() + "." + self.ip_Entry_2.get() + "." + self.ip_Entry_3.get() + "." + self.ip_Entry_4.get()
+
+
+def main():
+    serversocket = st.socket(st.AF_INET, st.SOCK_DGRAM)
+    bound = False
+    while not bound:
+        if len(sys.argv) == 1:
+            portwindow = tk.Tk()
+            portwindow.withdraw()
+            port = simpledialog.askinteger("Port", "What Port?")
+            portwindow.destroy()
+            if port == None:
+                port = 15200
+        else:
+            try:
+                int(sys.argv[1])
+            except ValueError:
+                raise SystemExit(
+                    f"Usage: Messenger.py <Port: int> [Port must be integer!]")
+            else:
+                port = sys.argv[1]
+        try:
+            serversocket.bind(("", port))
+        except:
+            pass
+        else:
+            bound = True
+        root = Messenger(port, serversocket)
+        root.focus_force()
+        # root.wm_attributes("-topmost", 1)
+        root.mainloop()
 
 
 if __name__ == "__main__":
-    try:
-        os.chdir("./messenger")
-    except OSError:
-        pass
-    if len(sys.argv) == 1:
-        portwindow = tk.Tk()
-        portwindow.withdraw()
-        port = simpledialog.askinteger("Port", "What Port?")
-        portwindow.destroy()
-    else:
-        try:
-            int(sys.argv[1])
-        except ValueError:
-            raise SystemExit(
-                f"Usage: Messenger.py <Port: int> [Port must be integer!]")
-        else:
-            port = sys.argv[1]
-    if not isinstance(port, int):
-        port = 15200
-    root = Messenger(port)
-    root.focus_force()
-    root.wm_attributes("-topmost", 1)
-    root.mainloop()
-    pygame.quit()
-    sys.exit()
+    main()
+    # try:
+    #     os.chdir("./messenger")
+    # except OSError:
+    #     pass
+    # if len(sys.argv) == 1:
+    #     portwindow = tk.Tk()
+    #     portwindow.withdraw()
+    #     port = simpledialog.askinteger("Port", "What Port?")
+    #     portwindow.destroy()
+    # else:
+    #     try:
+    #         int(sys.argv[1])
+    #     except ValueError:
+    #         raise SystemExit(
+    #             f"Usage: Messenger.py <Port: int> [Port must be integer!]")
+    #     else:
+    #         port = sys.argv[1]
+    # if not isinstance(port, int):
+    #     port = 15200
+    # serversocket = st.socket(st.AF_INET, st.SOCK_DGRAM)
+    # try:
+    #     serversocket.bind(("", port))
+    # except:
+    #     print()
+    # else:
+    #     root = Messenger(port)
+    #     root.focus_force()
+    #     root.wm_attributes("-topmost", 1)
+    #     root.mainloop()

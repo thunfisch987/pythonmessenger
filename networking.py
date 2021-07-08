@@ -4,10 +4,7 @@ import threading as thr
 import tkinter as tk
 
 
-def makesocket(self, port: int):
-    self.serversocket = st.socket(st.AF_INET, st.SOCK_DGRAM)
-    self.port = port
-    self.serversocket.bind(("", self.port))
+def makesocket(self):
     receivethread = thr.Thread(target=self.listenformsg, daemon=True)
     receivethread.start()
 
@@ -21,23 +18,23 @@ def listenformsg(self):
         if data["name"] != "":
             if addr[0] == "127.0.0.1":
                 self.ausgabe.configure(state='normal')
-                self.ausgabe.insert(tk.END, "{} (You): '{}' \n".format(
-                    data["name"], data["msg"]))
+                self.ausgabe.insert(
+                    tk.END, f"{data['name']} (You): '{data['msg']}' \n")
                 self.ausgabe.configure(state='disabled')
             else:
                 self.ausgabe.configure(state='normal')
-                self.ausgabe.insert(tk.END, "{} : '{}' \n".format(
-                    data["name"], data["msg"]))
+                self.ausgabe.insert(
+                    tk.END, f"{data['name']} : '{data['msg']}' \n")
                 self.ausgabe.configure(state='disabled')
         elif addr[0] == "127.0.0.1":
             self.ausgabe.configure(state='normal')
             self.ausgabe.insert(
-                tk.END, "{} (You): '{}' \n".format(addr[0], data["msg"]))
+                tk.END, f"{addr[0]} (You): '{data['msg']}' \n")
             self.ausgabe.configure(state='disabled')
         else:
             self.ausgabe.configure(state='normal')
             self.ausgabe.insert(
-                tk.END, "{} : '{}' \n".format(addr[0], data["msg"]))
+                tk.END, f"{addr[0]} : '{data['msg']}' \n")
             self.ausgabe.configure(state='disabled')
         self.ausgabe.see("end")
 
