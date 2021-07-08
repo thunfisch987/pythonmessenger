@@ -92,7 +92,6 @@ def usernamewidget(self):
     # self.name_Label.grid(row=0, column=0, sticky="nw")
     # self.name_Entry.grid(row=0, column=1, sticky="nw")
     # self.port_Label.grid(row=0, column=2)
-
     # self.name_Label.pack(side="left")
     self.name_Entry.pack(side="left")
     self.topmost_Button.pack(side="right")
@@ -197,4 +196,5 @@ def validIP(self):
 
 
 if __name__ == "__main__":
+    print("test")
     print("test")
