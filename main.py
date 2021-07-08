@@ -71,34 +71,36 @@ class Messenger(tk.Tk):
     def sendmsg(self, event=None):
         """Funktion zum Senden einer Nachricht"""
 
-        if self.msg_Entry.get() != "":
-            self.empfaenger = "localhost"
-            if self.user_IP == "...":
-                pass
-            if not self.validIP():
-                self.bell()
-                self.invalidIP_Label.pack()
-            else:
-                if self.user_IP != "...":
-                    self.empfaenger = self.user_IP
-                self.msgdict = {
-                    "name": self.name_Entry.get(),
-                    "msg": self.msg_Entry.get()}
-                self.jsonmsg = json.dumps(self.msgdict)
-                # senden der Nachricht an Ziel-Adresse über Socket
-                self.serversocket.sendto(self.jsonmsg.encode(
-                    "utf-8"), (self.empfaenger, self.port))
-                # löschen des Inhalts des Eingabe-Widgets
-                self.ausgabe.configure(state='normal')
-                if self.msgdict["name"] == "":
-                    self.ausgabe.insert(
-                        tk.END, f"You: '{self.msgdict['msg']}'\n", "right")
-                else:
-                    self.ausgabe.insert(
-                        tk.END, f"{self.msgdict['name']} (You): '{self.msgdict['msg']}'\n", "right")
-                self.ausgabe.configure(state='disabled')
-                self.ausgabe.see("end")
-                self.msg_Entry.delete(0, tk.END)
+        if self.msg_Entry.get() == "":
+            return
+        self.empfaenger = "localhost"
+        if not self.validIP():
+            self.bell()
+            self.invalidIP_Label.pack()
+        else:
+            self._extracted_from_sendmsg_12()
+
+    def _extracted_from_sendmsg_12(self):  # suggested by Sorcery
+        if self.user_IP != "...":
+            self.empfaenger = self.user_IP
+        self.msgdict = {
+            "name": self.name_Entry.get(),
+            "msg": self.msg_Entry.get()}
+        self.jsonmsg = json.dumps(self.msgdict)
+        # senden der Nachricht an Ziel-Adresse über Socket
+        self.serversocket.sendto(self.jsonmsg.encode(
+            "utf-8"), (self.empfaenger, self.port))
+        # löschen des Inhalts des Eingabe-Widgets
+        self.ausgabe.configure(state='normal')
+        if self.msgdict["name"] == "":
+            self.ausgabe.insert(
+                tk.END, f"You: '{self.msgdict['msg']}'\n", "right")
+        else:
+            self.ausgabe.insert(
+                tk.END, f"{self.msgdict['name']} (You): '{self.msgdict['msg']}'\n", "right")
+        self.ausgabe.configure(state='disabled')
+        self.ausgabe.see("end")
+        self.msg_Entry.delete(0, tk.END)
 
     @property
     def user_IP(self):
@@ -114,7 +116,7 @@ def main():
             portwindow.withdraw()
             port = simpledialog.askinteger("Port", "What Port?")
             portwindow.destroy()
-            if port == None:
+            if port is None:
                 port = 15200
         else:
             try:
