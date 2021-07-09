@@ -154,43 +154,38 @@ def deleteinvIPLabel(self, event=None):
 
 def checkIPEntry(self, ippart):
     if ippart:
-        if not ippart.isdigit():
-            self.bell()
-            return False
-        else:
-            if int(ippart) > 255 or int(ippart) < 0:
-                self.bell()
-                return False
-            else:
-                return True
+        if ippart.isdigit() and int(ippart) <= 255 and int(ippart) >= 0:
+            return True
+        self.bell()
+        return False
     else:
         return True
 
 
 def validmessage(self, message):
-    if len(message) > 1001:
-        self.bell()
-        return False
-    else:
+    if len(message) <= 1001:
         return True
+
+    self.bell()
+    return False
 
 
 def validusername(self, username):
-    if len(username) > 8:
-        self.bell()
-        return False
-    else:
+    if len(username) <= 8:
         return True
+
+    self.bell()
+    return False
 
 
 def validIP(self):
-    if self.user_IP != "...":
-        try:
-            IP(self.user_IP)
-        except Exception:
-            return False
-        else:
-            return True
+    if self.user_IP == "...":
+        return True
+
+    try:
+        IP(self.user_IP)
+    except Exception:
+        return False
     else:
         return True
 

@@ -15,27 +15,21 @@ def listenformsg(self):
         self.sound.play()
         jsondata = jsondata.decode("utf-8")
         data = json.loads(jsondata)
+        self.ausgabe.configure(state='normal')
         if data["name"] != "":
             if addr[0] == "127.0.0.1":
-                self.ausgabe.configure(state='normal')
                 self.ausgabe.insert(
                     tk.END, f"{data['name']} (You): '{data['msg']}' \n")
-                self.ausgabe.configure(state='disabled')
             else:
-                self.ausgabe.configure(state='normal')
                 self.ausgabe.insert(
                     tk.END, f"{data['name']} : '{data['msg']}' \n")
-                self.ausgabe.configure(state='disabled')
         elif addr[0] == "127.0.0.1":
-            self.ausgabe.configure(state='normal')
             self.ausgabe.insert(
                 tk.END, f"{addr[0]} (You): '{data['msg']}' \n")
-            self.ausgabe.configure(state='disabled')
         else:
-            self.ausgabe.configure(state='normal')
             self.ausgabe.insert(
                 tk.END, f"{addr[0]} : '{data['msg']}' \n")
-            self.ausgabe.configure(state='disabled')
+        self.ausgabe.configure(state='disabled')
         self.ausgabe.see("end")
 
 

@@ -26,6 +26,7 @@ class Messenger(tk.Tk):
     from networking import makesocket, listenformsg
 
     def __init__(self, port: int, serversocket):
+        self.port = port
         # Ausführen der Init-Funktion von Tk(), also dem Window
         super(Messenger, self).__init__()
         pygame.mixer.init()
@@ -85,7 +86,8 @@ class Messenger(tk.Tk):
             self.empfaenger = self.user_IP
         self.msgdict = {
             "name": self.name_Entry.get(),
-            "msg": self.msg_Entry.get()}
+            "msg": self.msg_Entry.get()
+        }
         self.jsonmsg = json.dumps(self.msgdict)
         # senden der Nachricht an Ziel-Adresse über Socket
         self.serversocket.sendto(self.jsonmsg.encode(
@@ -140,32 +142,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    # try:
-    #     os.chdir("./messenger")
-    # except OSError:
-    #     pass
-    # if len(sys.argv) == 1:
-    #     portwindow = tk.Tk()
-    #     portwindow.withdraw()
-    #     port = simpledialog.askinteger("Port", "What Port?")
-    #     portwindow.destroy()
-    # else:
-    #     try:
-    #         int(sys.argv[1])
-    #     except ValueError:
-    #         raise SystemExit(
-    #             f"Usage: Messenger.py <Port: int> [Port must be integer!]")
-    #     else:
-    #         port = sys.argv[1]
-    # if not isinstance(port, int):
-    #     port = 15200
-    # serversocket = st.socket(st.AF_INET, st.SOCK_DGRAM)
-    # try:
-    #     serversocket.bind(("", port))
-    # except:
-    #     print()
-    # else:
-    #     root = Messenger(port)
-    #     root.focus_force()
-    #     root.wm_attributes("-topmost", 1)
-    #     root.mainloop()
