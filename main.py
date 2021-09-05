@@ -20,10 +20,9 @@ import sys
 class Messenger(tk.Tk):
     """
     Window
-    TODO: export Functions to seperate files and so on
     """
     from makewidgets import widgets, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel, checkIPEntry, validmessage, validusername, validIP
-    from networking import makesocket, listenformsg
+    from networking import startlistening, listenformsg
 
     def __init__(self, port: int, serversocket):
         self.port = port
@@ -32,7 +31,7 @@ class Messenger(tk.Tk):
         pygame.mixer.init()
         self.sound = pygame.mixer.Sound("./sound.ogg")
 
-        # Eigenschaften
+        # Eigenschaftens
         self.windowsettings()
 
         # Erschaffen der Widgets etc.
@@ -41,7 +40,7 @@ class Messenger(tk.Tk):
         # Erschaffen des Sockets (IPv4, UDP) und binden an alle Adressen mit gg. Port
         # Starten des Threads der auf einkommende Nachrichten hört
         self.serversocket = serversocket
-        self.makesocket()
+        self.startlistening()
         self.buttonstyle = ttk.Style()
 
     def makeTopMost(self):
@@ -109,17 +108,34 @@ class Messenger(tk.Tk):
         return self.ip_Entry_1.get() + "." + self.ip_Entry_2.get() + "." + self.ip_Entry_3.get() + "." + self.ip_Entry_4.get()
 
 
+class MessengerSocket(st.socket):
+    def __init__(self, family, type):
+        super(MessengerSocket, self).__init__(family, type)
+
+
+class PortWindow(tk.Tk):
+    port: int
+
+    def get_port(self) -> int:
+        """\
+        Create a simpledialog asking for the port.
+        
+        If port is None (Dialog was closed) the port is set to 15200
+        """
+        self.withdraw()
+        self.port = simpledialog.askinteger("Port", "What Port?")
+        if self.port is None:
+            self.port = 15200
+        self.destroy()
+        return self.port
+
+
 def main():
-    serversocket = st.socket(st.AF_INET, st.SOCK_DGRAM)
+    serversocket = MessengerSocket(st.AF_INET, st.SOCK_DGRAM)
     bound = False
     while not bound:
         if len(sys.argv) == 1:
-            portwindow = tk.Tk()
-            portwindow.withdraw()
-            port = simpledialog.askinteger("Port", "What Port?")
-            portwindow.destroy()
-            if port is None:
-                port = 15200
+            port = PortWindow().get_port()
         else:
             try:
                 int(sys.argv[1])
