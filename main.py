@@ -28,8 +28,11 @@ class Messenger(tk.Tk):
         self.port = port
         # Ausführen der Init-Funktion von Tk(), also dem Window
         super(Messenger, self).__init__()
-        pygame.mixer.init()
-        self.sound = pygame.mixer.Sound("./sound.ogg")
+        try:
+            pygame.mixer.init()
+            self.sound = pygame.mixer.Sound("./sound.ogg")
+        except Exception as e:
+            print(e)
 
         # Eigenschaftens
         self.windowsettings()
@@ -78,9 +81,9 @@ class Messenger(tk.Tk):
             self.bell()
             self.invalidIP_Label.pack()
         else:
-            self._extracted_from_sendmsg_12()
+            self.send()
 
-    def _extracted_from_sendmsg_12(self):  # suggested by Sorcery
+    def send(self):  # suggested by Sorcery
         if self.user_IP != "...":
             self.empfaenger = self.user_IP
         self.msgdict = {
