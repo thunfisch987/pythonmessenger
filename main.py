@@ -144,7 +144,7 @@ def main():
                 int(sys.argv[1])
             except ValueError:
                 raise SystemExit(
-                    f"Usage: Messenger.py <Port: int> [Port must be integer!]")
+                    'Usage: Messenger.py <Port: int> [Port must be integer!]')
             else:
                 port = sys.argv[1]
         try:

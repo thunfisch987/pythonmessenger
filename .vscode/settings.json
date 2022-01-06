@@ -20,5 +20,6 @@
 				"property": "#49c02c"
 			}
 		}
-	}
+	},
+	"git.enableCommitSigning": true
 }
