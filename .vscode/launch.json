@@ -8,7 +8,7 @@
 			"name": "Python: Messenger",
 			"type": "python",
 			"request": "launch",
-			"program": "C:\\Users\\Oliver\\Desktop\\Python\\Messenger\\main.py",
+			"program": "C:\\Users\\Oliver\\Documents\\CODING\\Python\\messenger\\main.py",
 			"console": "integratedTerminal",
 			"args": ["15200"]
 		}
