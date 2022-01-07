@@ -5,6 +5,31 @@ import tkinter.ttk as ttk
 from IPy import IP
 
 
+def makeTopMost(self):
+    if self.wm_attributes("-topmost") == 1:
+        self.wm_attributes("-topmost", 0)
+        self.buttonstyle.configure(
+            'topmost.TButton', background='SystemButtonFace')
+    else:
+        self.wm_attributes("-topmost", 1)
+        self.buttonstyle.configure(
+            'topmost.TButton', background='palegreen')
+
+
+def windowsettings(self):
+    self.title("Python Messenger")
+
+
+def configuregridweight(self):
+    self.grid_rowconfigure(0, weight=1)
+    self.grid_rowconfigure(2, weight=1)
+    self.grid_rowconfigure(3, weight=1)
+    self.grid_rowconfigure(4, weight=1)
+    self.grid_columnconfigure(0, weight=1)
+    self.grid_columnconfigure(1, weight=1)
+    self.grid_columnconfigure(2, weight=1)
+
+
 def widgets(self, port: int):
     """
             Defining all Widgets
@@ -85,6 +110,12 @@ def usernamewidget(self):
     self.name_Entry["validate"] = "key"
     self.name_Entry["validatecommand"] = (self.usernamecmd, "%P")
 
+    self.sound_variable = tk.IntVar(self)
+    self.sound_variable.set(1)
+    self.sound_Checkbox = ttk.Checkbutton(self.UsernameFrame)
+    self.sound_Checkbox["text"] = "Message Sound"
+    self.sound_Checkbox["variable"] = self.sound_variable
+
     self.topmost_Button = ttk.Button(
         self.UsernameFrame, text="AlwaysOnTop", command=self.makeTopMost, style='topmost.TButton')
 
@@ -94,6 +125,7 @@ def usernamewidget(self):
     # self.port_Label.grid(row=0, column=2)
     # self.name_Label.pack(side="left")
     self.name_Entry.pack(side="left")
+    self.sound_Checkbox.pack(side="left")
     self.topmost_Button.pack(side="right")
 
 
@@ -103,7 +135,7 @@ def makeIPFrame(self, port: int):
     self.BigFrame = ttk.LabelFrame(self)
     self.BigFrame["text"] = "Empfänger (IP):"
     self.IPframe = ttk.LabelFrame(self.BigFrame)
-    #self.IPframe["text"] = "Enter IP Here"
+    self.IPframe["text"] = "Enter IP Here"
     self.IPframe["relief"] = tk.SUNKEN
 
     self.ip_Entry_1 = ttk.Entry(self.IPframe)
@@ -189,6 +221,9 @@ def validIP(self):
     else:
         return True
 
+
+__all__ = ["widgets", "makeMessageWidgets", "usernamewidget", "makeIPFrame", "deleteinvIPLabel", "checkIPEntry",
+           "validmessage", "validusername", "validIP", "configuregridweight", "makeTopMost", "windowsettings"]
 
 if __name__ == "__main__":
     print("test")

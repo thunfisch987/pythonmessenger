@@ -1,5 +1,4 @@
 {
-	"python.pythonPath": "C:\\Users\\Oliver\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
 	"python.linting.enabled": true,
 	"python.analysis.extraPaths": ["messenger"],
 	"files.exclude": {
@@ -21,5 +20,6 @@
 			}
 		}
 	},
-	"git.enableCommitSigning": true
+	"git.enableCommitSigning": true,
+	"python.pythonPath": "C:\\Users\\Oliver\\AppData\\Local\\Programs\\Python\\Python310\\python.exe"
 }

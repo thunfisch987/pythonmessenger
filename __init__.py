@@ -2,7 +2,7 @@
 Python Messenger
 Author: Oliver Sader
 """
-
+from dataclasses import dataclass
 from tkinter import simpledialog
 from tkinter import scrolledtext
 import tkinter.ttk as ttk
@@ -21,8 +21,9 @@ class Messenger(tk.Tk):
     """
     Window
     """
-    from makewidgets import widgets, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel, checkIPEntry, validmessage, validusername, validIP
-    from networking import startlistening, listenformsg
+    from window import (widgets, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel,
+                        checkIPEntry, validmessage, validusername, validIP, configuregridweight, makeTopMost, windowsettings)
+    from networking import startlistening, listenformsg, Message, sendmsg, send
 
     def __init__(self, port: int, serversocket):
         self.port = port
@@ -45,69 +46,6 @@ class Messenger(tk.Tk):
         self.serversocket = serversocket
         self.startlistening()
         self.buttonstyle = ttk.Style()
-
-    def makeTopMost(self):
-        if self.wm_attributes("-topmost") == 1:
-            self.wm_attributes("-topmost", 0)
-            self.buttonstyle.configure(
-                'topmost.TButton', background='SystemButtonFace')
-        else:
-            self.wm_attributes("-topmost", 1)
-            self.buttonstyle.configure(
-                'topmost.TButton', background='palegreen')
-
-    def windowsettings(self):
-        self.title("Python Messenger")
-        # self.geometry("700x500")
-        # self.minsize(700, 500)
-        # self.maxsize(700, 500)
-
-    def configuregridweight(self):
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_rowconfigure(2, weight=1)
-        self.grid_rowconfigure(3, weight=1)
-        self.grid_rowconfigure(4, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        self.grid_columnconfigure(1, weight=1)
-        self.grid_columnconfigure(2, weight=1)
-
-    def sendmsg(self, event=None):
-        """Funktion zum Senden einer Nachricht"""
-
-        if self.msg_Entry.get() == "":
-            return
-        self.empfaenger = "localhost"
-        if not self.validIP():
-            self.bell()
-            self.invalidIP_Label.pack()
-        else:
-            self.send()
-
-    def send(self):  # suggested by Sorcery
-        if self.user_IP != "...":
-            self.empfaenger = self.user_IP
-        self.msgdict = {
-            "name": self.name_Entry.get(),
-            "msg": self.msg_Entry.get()
-        }
-        self.jsonmsg = json.dumps(self.msgdict)
-        # senden der Nachricht an Ziel-Adresse über Socket
-        self.serversocket.sendto(self.jsonmsg.encode(
-            "utf-8"), (self.empfaenger, self.port))
-        # löschen des Inhalts des Eingabe-Widgets
-        self.ausgabe.configure(state='normal')
-        if self.msgdict["name"] == "":
-            self.ausgabe.insert(
-                tk.END, f"You: '{self.msgdict['msg']}'\n", "right")
-        else:
-            self.ausgabe.insert(
-                tk.END, f"{self.msgdict['name']} (You): '{self.msgdict['msg']}'\n", "right")
-        self.ausgabe.configure(state='disabled')
-        self.ausgabe.see("end")
-        self.msg_Entry.delete(0, tk.END)
-
-    class Message():
-        pass
 
     @property
     def user_IP(self):
@@ -158,7 +96,6 @@ def main():
             bound = True
         root = Messenger(port, serversocket)
         root.focus_force()
-        # root.wm_attributes("-topmost", 1)
         root.mainloop()
 
 
