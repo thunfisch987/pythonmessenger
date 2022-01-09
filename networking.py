@@ -6,6 +6,11 @@ from datetime import datetime
 from dataclasses import dataclass
 
 
+class MessengerSocket(st.socket):
+    def __init__(self, family, type):
+        super(MessengerSocket, self).__init__(family, type)
+
+
 def startlistening(self):
     receivethread = thr.Thread(target=self.listenformsg, daemon=True)
     receivethread.start()
