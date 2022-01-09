@@ -2,7 +2,8 @@
 Python Messenger
 Author: Oliver Sader
 """
-from networking import MessengerSocket
+
+from . import netw
 import messengerUI
 # from dataclasses import dataclass
 # from tkinter import simpledialog
@@ -11,8 +12,6 @@ import messengerUI
 # import tkinter as tk
 # import threading as thr
 import socket as st
-import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 # import json
 # import pygame
 # from IPy import IP
@@ -20,7 +19,7 @@ import sys
 
 
 def main():
-    serversocket = MessengerSocket(st.AF_INET, st.SOCK_DGRAM)
+    serversocket = netw.MessengerSocket(st.AF_INET, st.SOCK_DGRAM)
     bound = False
     while not bound:
         if len(sys.argv) == 1:
