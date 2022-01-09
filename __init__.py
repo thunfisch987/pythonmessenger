@@ -5,16 +5,7 @@ Author: Oliver Sader
 
 from . import netw
 import messengerUI
-# from dataclasses import dataclass
-# from tkinter import simpledialog
-# from tkinter import scrolledtext
-# import tkinter.ttk as ttk
-# import tkinter as tk
-# import threading as thr
 import socket as st
-# import json
-# import pygame
-# from IPy import IP
 import sys
 
 
