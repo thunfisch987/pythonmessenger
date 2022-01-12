@@ -1,3 +1,21 @@
+Metadata-Version: 2.1
+Name: thunmessenger
+Version: 0.0.2
+Summary: A messenger written in Python
+Home-page: https://github.com/thunfisch987/pythonmessenger
+Author: Oliver Sader
+Author-email: thunfisch987@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/thunfisch987/pythonmessenger/issues
+Keywords: messenger,network,GUI,tkinter
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # pythonmessenger
 
 A local-network Messenger written in Python
@@ -18,3 +36,5 @@ coded with VSCode, with help from:
   - [Tabnine](https://marketplace.visualstudio.com/items?itemName=TabNine.tabnine-vscode)
   - [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
   - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+
+
