@@ -2,19 +2,17 @@
 Python Messenger
 Author: Oliver Sader
 """
-
-from . import netw
-import messengerUI
-import socket as st
+from netw import MessengerSocket
+from messengerUI import PortWindow, MessengerWindow
 import sys
 
 
-def main():
-    serversocket = netw.MessengerSocket(st.AF_INET, st.SOCK_DGRAM)
+if __name__ == "__main__":
+    serversocket = MessengerSocket()
     bound = False
     while not bound:
         if len(sys.argv) == 1:
-            port = messengerUI.PortWindow().get_port()
+            port = PortWindow().get_port()
         else:
             try:
                 int(sys.argv[1])
@@ -29,10 +27,6 @@ def main():
             pass
         else:
             bound = True
-        root = messengerUI.MessengerWindow(port, serversocket)
+        root = MessengerWindow(port, serversocket)
         root.focus_force()
         root.mainloop()
-
-
-if __name__ == "__main__":
-    main()
