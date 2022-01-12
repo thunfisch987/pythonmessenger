@@ -24,6 +24,7 @@ class MessengerWindow(tk.Tk):
             pygame.mixer.init()
             self.sound = pygame.mixer.Sound(os.path.join(
                 os.path.dirname(__file__), "sound.ogg"))
+            print(self.sound)
         except Exception as e:
             print(e)
 

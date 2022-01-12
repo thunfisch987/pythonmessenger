@@ -1,4 +1,5 @@
 LICENSE
+MANIFEST.in
 README.md
 pyproject.toml
 setup.cfg
@@ -9,6 +10,8 @@ src/thunmessenger/rsa.py
 src/thunmessenger.egg-info/PKG-INFO
 src/thunmessenger.egg-info/SOURCES.txt
 src/thunmessenger.egg-info/dependency_links.txt
+src/thunmessenger.egg-info/requires.txt
 src/thunmessenger.egg-info/top_level.txt
 src/thunmessenger/messengerUI/__init__.py
+src/thunmessenger/messengerUI/sound.ogg
 src/thunmessenger/messengerUI/widgets.py
