@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 
 class MessengerSocket(st.socket):
-    def __init__(self, family, type):
+    def __init__(self, family=st.AF_INET, type=st.SOCK_DGRAM):
         super(MessengerSocket, self).__init__(family, type)
 
 
