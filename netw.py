@@ -42,7 +42,7 @@ def listenformsg(self):
         self.ausgabe.see("end")
 
 
-def sendmsg(self, event=None):
+def sendmessage(self, event=None):
     """Funktion zum Senden einer Nachricht"""
 
     if self.msg_Entry.get() == "":
