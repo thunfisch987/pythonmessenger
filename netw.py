@@ -48,7 +48,7 @@ def sendmessage(self, event=None):
     if self.msg_Entry.get() == "":
         return
     self.empfaenger = "localhost"
-    if not self.validIP():
+    if not self.widg.validIP():
         self.bell()
         self.invalidIP_Label.pack()
     else:

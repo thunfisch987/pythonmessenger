@@ -5,36 +5,39 @@ from tkinter import simpledialog
 from tkinter import scrolledtext
 import tkinter.ttk as ttk
 import tkinter as tk
+import socket as st
 
 
 class MessengerWindow(tk.Tk):
     """
     Window
     """
-    from .widgets import widgetmaking, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel, checkIPEntry, validmessage, validusername, validIP, configuregridweight, makeTopMost, windowsettings
-    from networking import startlistening, listenformsg, Message, sendmsg, send
+    # from .widgets import widgetmaking, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel, checkIPEntry, validmessage, validusername, validIP, configuregridweight, makeTopMost, windowsettings
+    from .widgets import Widgets, Settings
+    from netw import startlistening, listenformsg, Message, sendmessage, send
 
-    def __init__(self, port: int, serversocket):
+    def __init__(self, port: int, serversocket: st.socket):
         self.port = port
         # Ausführen der Init-Funktion von Tk(), also dem Window
         super(MessengerWindow, self).__init__()
         try:
             pygame.mixer.init()
-            self.sound = pygame.mixer.Sound("./sound.ogg")
+            self.sound = pygame.mixer.Sound(os.path.join(
+                os.path.dirname(__file__), "./sound.ogg"))
         except Exception as e:
             print(e)
 
+        self.me = self
+        self.settings = self.Settings(self.me)
+        self.widg = self.Widgets(self.me)
         # Eigenschaftens
-        self.windowsettings()
+        self.settings.windowsettings()
 
         # Erschaffen der Widgets etc.
-        self.widgetmaking(port)
+        self.widg.widgetmaking(port)
 
-        # Erschaffen des Sockets (IPv4, UDP) und binden an alle Adressen mit gg. Port
-        # Starten des Threads der auf einkommende Nachrichten hört
         self.serversocket = serversocket
         self.startlistening()
-        self.buttonstyle = ttk.Style()
 
     @property
     def user_IP(self):
