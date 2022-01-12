@@ -172,13 +172,14 @@ class Widgets():
         self.parent.invalidIP_Label.pack_forget()
 
     def validmessage(self, message):
-        if len(message) <= 1001:
-            return True
-        self.parent.bell()
-        return False
+        return self.bell_method(message, 1001)
 
     def validusername(self, username):
-        if len(username) <= 8:
+        return self.bell_method(username, 8)
+
+    # TODO Rename this here and in `validmessage` and `validusername`
+    def bell_method(self, arg0, arg1):
+        if len(arg0) <= arg1:
             return True
         self.parent.bell()
         return False
