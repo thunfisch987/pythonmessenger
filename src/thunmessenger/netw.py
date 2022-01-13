@@ -20,7 +20,7 @@ def listenformsg(self):
     while True:
         jsondata, addr = self.serversocket.recvfrom(1024)
         if self.sound_variable.get():
-            self.sound.play()
+            self.play()
         self.incmessage = Message()
         self.incmessage.updt(jsondata)
         self.ausgabe.configure(state='normal')

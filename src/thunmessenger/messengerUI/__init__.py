@@ -1,6 +1,5 @@
 import os
-os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
-import pygame
+from playsound import playsound
 from tkinter import simpledialog
 from tkinter import scrolledtext
 import tkinter.ttk as ttk
@@ -20,13 +19,6 @@ class MessengerWindow(tk.Tk):
         self.port = port
         # Ausführen der Init-Funktion von Tk(), also dem Window
         super(MessengerWindow, self).__init__()
-        try:
-            pygame.mixer.init()
-            self.sound = pygame.mixer.Sound(os.path.join(
-                os.path.dirname(__file__), "sound.ogg"))
-            print(self.sound)
-        except Exception as e:
-            print(e)
 
         self.me = self
         self.settings = self.Settings(self.me)
@@ -39,6 +31,10 @@ class MessengerWindow(tk.Tk):
 
         self.serversocket = serversocket
         self.startlistening()
+
+    def play(self):
+        sound = os.path.join(os.path.dirname(__file__), "sound.wav")
+        playsound(sound, block=False)
 
     @property
     def user_IP(self):

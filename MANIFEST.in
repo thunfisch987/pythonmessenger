@@ -1,1 +1,2 @@
-global-include *.ogg
+global-include *.wav
+global-exclude README.md
