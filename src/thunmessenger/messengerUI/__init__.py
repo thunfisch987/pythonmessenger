@@ -37,7 +37,7 @@ class MessengerWindow(tk.Tk):
         playsound(sound, block=False)
 
     @property
-    def user_IP(self):
+    def user_IP(self) -> str:
         return self.ip_Entry_1.get() + "." + self.ip_Entry_2.get() + "." + self.ip_Entry_3.get() + "." + self.ip_Entry_4.get()
 
 

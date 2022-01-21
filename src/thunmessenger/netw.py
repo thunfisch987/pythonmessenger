@@ -7,16 +7,16 @@ from dataclasses import dataclass
 
 
 class MessengerSocket(st.socket):
-    def __init__(self, family=st.AF_INET, type=st.SOCK_DGRAM):
+    def __init__(self, family=st.AF_INET, type=st.SOCK_DGRAM) -> None:
         super(MessengerSocket, self).__init__(family, type)
 
 
-def startlistening(self):
+def startlistening(self) -> None:
     receivethread = thr.Thread(target=self.listenformsg, daemon=True)
     receivethread.start()
 
 
-def listenformsg(self):
+def listenformsg(self) -> None:
     while True:
         jsondata, addr = self.serversocket.recvfrom(1024)
         if self.sound_variable.get():
@@ -42,7 +42,7 @@ def listenformsg(self):
         self.ausgabe.see("end")
 
 
-def sendmessage(self, event=None):
+def sendmessage(self, event=None) -> None:
     """Funktion zum Senden einer Nachricht"""
 
     if self.msg_Entry.get() == "":
@@ -55,7 +55,7 @@ def sendmessage(self, event=None):
         self.send()
 
 
-def send(self):  # suggested by Sorcery
+def send(self) -> None:
     if self.user_IP != "...":
         self.empfaenger = self.user_IP
     self.message = self.Message(name=self.name_Entry.get(),
@@ -81,20 +81,20 @@ class Message:
     name: str = ""
     msg: str = ""
 
-    def __jsondumps(self):
+    def __jsondumps(self) -> str:
         return json.dumps(self.__dict__)
 
-    def jsonloads(self, jsonmsg):
+    def __jsonloads(self, jsonmsg: bytes) -> dict:
         return json.loads(self.__decoded(jsonmsg))
 
-    def __decoded(self, jsonmsg):
+    def __decoded(self, jsonmsg: bytes) -> str:
         return jsonmsg.decode("utf-8")
 
-    def encoded(self):
+    def encoded(self) -> bytes:
         return self.__jsondumps().encode("utf-8")
 
-    def updt(self, jsonmsg):
-        self.__dict__.update(self.jsonloads(jsonmsg))
+    def updt(self, jsonmsg: bytes):
+        self.__dict__.update(self.__jsonloads(jsonmsg))
 
 
 if __name__ == '__main__':

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: thunmessenger
-Version: 0.0.6
+Version: 0.0.8
 Summary: A messenger written in Python
 Home-page: https://github.com/thunfisch987/pythonmessenger
 Author: Oliver Sader
@@ -21,8 +21,8 @@ License-File: LICENSE
 A local-network Messenger written in Python
 
 Dependencies:
-    dataclasses
-    IPy
-    playsound
+    - dataclasses
+    - IPy
+    - playsound
 
 

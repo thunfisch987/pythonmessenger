@@ -29,7 +29,7 @@ class Widgets():
         self.parent.ausgabe = scrolledtext.ScrolledText()
         self.parent.ausgabe.grid(row=3,
                                  column=0,
-                                 columnspan=3,
+                                 columnspan=4,
                                  sticky="ew")
         self.parent.ausgabe.tag_config("right", justify="right")
 
@@ -39,7 +39,7 @@ class Widgets():
         self.parent.send_Button["text"] = "Send"
         self.parent.send_Button["command"] = self.parent.sendmessage
         self.parent.send_Button.grid(row=4,
-                                     column=2,
+                                     column=3,
                                      sticky="w")
 
         # configuring
@@ -49,12 +49,18 @@ class Widgets():
 
     def makeMessageWidgets(self):
         self.parent.msgcmd = self.parent.register(self.validmessage)
+        self.parent.lengthvar = tk.StringVar()
+        self.parent.lengthvar.set("Remaining Characters: 1000")
+
         self.parent.message_label = ttk.Label(self.parent)
-        self.parent.message_label["text"] = "Nachricht (max. 1001 characters):"
+        self.parent.message_label["text"] = "Nachricht (max. 1000 characters):"
 
         self.parent.msg_Entry = ttk.Entry(self.parent)
         self.parent.msg_Entry["validate"] = "key"
-        self.parent.msg_Entry["validatecommand"] = (self.parent.msgcmd, "%Ps")
+        self.parent.msg_Entry["validatecommand"] = (self.parent.msgcmd, "%P")
+
+        self.parent.length_Label = ttk.Label(self.parent)
+        self.parent.length_Label["textvariable"] = self.parent.lengthvar
 
         self.parent.message_label.grid(row=4,
                                        column=0,
@@ -62,6 +68,9 @@ class Widgets():
         self.parent.msg_Entry.grid(row=4,
                                    column=1,
                                    sticky="w")
+        self.parent.length_Label.grid(row=4,
+                                      column=2,
+                                      sticky="w")
 
         self.parent.msg_Entry.bind("<Return>",
                                    self.parent.sendmessage)
@@ -70,18 +79,13 @@ class Widgets():
         """
         Defines the Username-Widgets (and Port)
         - UsernameFrame
-        - port_Label
-        - name_Label
         - name_Entry
         """
         self.parent.usernamecmd = self.parent.register(self.validusername)
 
         self.parent.UsernameFrame = ttk.LabelFrame(self.parent)
-        self.parent.UsernameFrame["text"] = "Username: (max. 8 characters)"
+        self.parent.UsernameFrame["text"] = "Username: (max. 9 characters)"
         self.parent.UsernameFrame["relief"] = tk.SUNKEN
-
-        # self.name_Label = ttk.Label(self.UsernameFrame)
-        # self.name_Label["text"] = "Name (max. 8 characters):"
 
         self.parent.name_Entry = ttk.Entry(self.parent.UsernameFrame)
         self.parent.name_Entry["validate"] = "key"
@@ -97,12 +101,10 @@ class Widgets():
         self.parent.topmost_Button = ttk.Button(
             self.parent.UsernameFrame, text="AlwaysOnTop", command=self.parent.settings.makeTopMost, style='topmost.TButton')
 
-        self.parent.UsernameFrame.grid(
-            row=0, column=0, columnspan=3, sticky="nsew")
-        # self.name_Label.grid(row=0, column=0, sticky="nw")
-        # self.name_Entry.grid(row=0, column=1, sticky="nw")
-        # self.port_Label.grid(row=0, column=2)
-        # self.name_Label.pack(side="left")
+        self.parent.UsernameFrame.grid(row=0,
+                                       column=0,
+                                       columnspan=4,
+                                       sticky="nsew")
         self.parent.name_Entry.pack(side="left")
         self.parent.sound_Checkbox.pack(side="left")
         self.parent.topmost_Button.pack(side="right")
@@ -140,7 +142,7 @@ class Widgets():
 
         self.parent.BigFrame.grid(row=1,
                                   column=0,
-                                  columnspan=3,
+                                  columnspan=4,
                                   sticky="nsew")
         self.parent.IPframe.pack(side="left")
 
@@ -159,7 +161,7 @@ class Widgets():
         self.parent.ip_Entry_3.bind("<FocusIn>", self.deleteinvIPLabel)
         self.parent.ip_Entry_4.bind("<FocusIn>", self.deleteinvIPLabel)
 
-    def checkIPEntry(self, ippart):
+    def checkIPEntry(self, ippart) -> bool:
         if ippart:
             if ippart.isdigit() and int(ippart) <= 255 and int(ippart) >= 0:
                 return True
@@ -171,20 +173,21 @@ class Widgets():
     def deleteinvIPLabel(self, event=None):
         self.parent.invalidIP_Label.pack_forget()
 
-    def validmessage(self, message):
-        return self.bell_method(message, 1001)
+    def validmessage(self, message) -> bool:
+        self.parent.lengthvar.set(
+            "Remaining Characters: " + str(1000 - len(message)))
+        return self.check_length(message, 1000)
 
-    def validusername(self, username):
-        return self.bell_method(username, 8)
+    def validusername(self, username) -> bool:
+        return self.check_length(username, 9)
 
-    # TODO Rename this here and in `validmessage` and `validusername`
-    def bell_method(self, arg0, arg1):
+    def check_length(self, arg0, arg1) -> bool:
         if len(arg0) <= arg1:
             return True
         self.parent.bell()
         return False
 
-    def validIP(self):
+    def validIP(self) -> bool:
         if self.parent.user_IP == "...":
             return True
         try:
