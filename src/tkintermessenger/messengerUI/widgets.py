@@ -46,6 +46,7 @@ class Widgets():
         self.parent.settings.configuregridweight()
         self.parent.ausgabe.configure(state='disabled')
         self.parent.name_Entry.focus()
+        return
 
     def makeMessageWidgets(self):
         self.parent.msgcmd = self.parent.register(self.validmessage)
@@ -74,6 +75,7 @@ class Widgets():
 
         self.parent.msg_Entry.bind("<Return>",
                                    self.parent.sendmessage)
+        return
 
     def usernamewidget(self):
         """
@@ -108,6 +110,7 @@ class Widgets():
         self.parent.name_Entry.pack(side="left")
         self.parent.sound_Checkbox.pack(side="left")
         self.parent.topmost_Button.pack(side="right")
+        return
 
     def makeIPFrame(self, port: int):
         self.parent.vcmd = self.parent.register(self.checkIPEntry)
@@ -160,6 +163,7 @@ class Widgets():
         self.parent.ip_Entry_2.bind("<FocusIn>", self.deleteinvIPLabel)
         self.parent.ip_Entry_3.bind("<FocusIn>", self.deleteinvIPLabel)
         self.parent.ip_Entry_4.bind("<FocusIn>", self.deleteinvIPLabel)
+        return
 
     def checkIPEntry(self, ippart) -> bool:
         if ippart:
@@ -172,6 +176,7 @@ class Widgets():
 
     def deleteinvIPLabel(self, event=None):
         self.parent.invalidIP_Label.pack_forget()
+        return
 
     def validmessage(self, message) -> bool:
         self.parent.lengthvar.set(
@@ -203,7 +208,7 @@ class Settings():
     def __init__(self, parent):
         self.parent = parent
 
-    def makeTopMost(self):
+    def makeTopMost(self) -> None:
         self.parent.buttonstyle = ttk.Style()
         if self.parent.wm_attributes("-topmost") == 1:
             self.parent.wm_attributes("-topmost", 0)
@@ -213,11 +218,13 @@ class Settings():
             self.parent.wm_attributes("-topmost", 1)
             self.parent.buttonstyle.configure(
                 'topmost.TButton', background='palegreen')
+        return
 
-    def windowsettings(self):
+    def windowsettings(self) -> None:
         self.parent.title("Python Messenger")
+        return
 
-    def configuregridweight(self):
+    def configuregridweight(self) -> None:
         self.parent.grid_rowconfigure(0, weight=1)
         self.parent.grid_rowconfigure(2, weight=1)
         self.parent.grid_rowconfigure(3, weight=1)
@@ -225,11 +232,10 @@ class Settings():
         self.parent.grid_columnconfigure(0, weight=1)
         self.parent.grid_columnconfigure(1, weight=1)
         self.parent.grid_columnconfigure(2, weight=1)
+        return
 
 
-__all__ = ["Widgets", "settings"]
-
-# __all__ = ["Widgets", "Settings"]
+__all__ = ["Widgets", "Settings"]
 
 if __name__ == "__main__":
     print("test")

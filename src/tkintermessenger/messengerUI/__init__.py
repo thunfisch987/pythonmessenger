@@ -15,7 +15,7 @@ class MessengerWindow(tk.Tk):
     from .widgets import Widgets, Settings
     from ..netw import startlistening, listenformsg, Message, sendmessage, send
 
-    def __init__(self, port: int, serversocket: st.socket):
+    def __init__(self, port: int, serversocket: st.socket) -> None:
         self.port = port
         # Ausführen der Init-Funktion von Tk(), also dem Window
         super(MessengerWindow, self).__init__()
@@ -32,9 +32,10 @@ class MessengerWindow(tk.Tk):
         self.serversocket = serversocket
         self.startlistening()
 
-    def play(self):
+    def play(self) -> None:
         sound = os.path.join(os.path.dirname(__file__), "sound.wav")
         playsound(sound, block=False)
+        return
 
     @property
     def user_IP(self) -> str:
