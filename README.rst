@@ -1,8 +1,8 @@
-# pythonmessenger
+# tkintermessenger
 
 A local-network Messenger written in Python
 
-Dependencies:
+- Dependencies:
     - dataclasses
     - IPy
     - playsound

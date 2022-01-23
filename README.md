@@ -1,4 +1,4 @@
-# pythonmessenger
+# tkintermessenger
 
 A local-network Messenger written in Python
 
