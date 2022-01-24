@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: tkintermessenger
-Version: 0.0.8
+Version: 0.0.9
 Summary: A messenger written in Python
 Home-page: https://github.com/thunfisch987/pythonmessenger
 Author: Oliver Sader
@@ -16,11 +16,11 @@ Requires-Python: >=3
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-# pythonmessenger
+# tkintermessenger
 
 A local-network Messenger written in Python
 
-Dependencies:
+- Dependencies:
     - dataclasses
     - IPy
     - playsound
