@@ -11,6 +11,7 @@ class MessengerWindow(tk.Tk):
     """
     Window
     """
+
     # from .widgets import widgetmaking, makeMessageWidgets, usernamewidget, makeIPFrame, deleteinvIPLabel, checkIPEntry, validmessage, validusername, validIP, configuregridweight, makeTopMost, windowsettings
     from .widgets import Widgets, Settings
     from ..netw import startlistening, listenformsg, Message, sendmessage, send
@@ -39,7 +40,15 @@ class MessengerWindow(tk.Tk):
 
     @property
     def user_IP(self) -> str:
-        return self.ip_Entry_1.get() + "." + self.ip_Entry_2.get() + "." + self.ip_Entry_3.get() + "." + self.ip_Entry_4.get()
+        return (
+            self.ip_Entry_1.get()
+            + "."
+            + self.ip_Entry_2.get()
+            + "."
+            + self.ip_Entry_3.get()
+            + "."
+            + self.ip_Entry_4.get()
+        )
 
 
 class PortWindow(tk.Tk):

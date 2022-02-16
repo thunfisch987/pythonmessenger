@@ -2,6 +2,7 @@
 Python Messenger
 Author: Oliver Sader
 """
+
 from .netw import MessengerSocket
 from .messengerUI import PortWindow, MessengerWindow
 import sys
@@ -17,9 +18,10 @@ if __name__ == "__main__":
             try:
                 print(int(sys.argv[1]))
                 int(sys.argv[1])
-            except ValueError:
+            except ValueError as e:
                 raise SystemExit(
-                    'Usage: Messenger.py <Port: int> [Port must be integer!]')
+                    "Usage: Messenger.py <Port: int> [Port must be integer!]"
+                ) from e
             else:
                 port = int(sys.argv[1])
                 print(port)
